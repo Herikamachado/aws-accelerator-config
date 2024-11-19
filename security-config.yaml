@@ -1,0 +1,208 @@
+centralSecurityServices:
+  delegatedAdminAccount: Audit
+  ebsDefaultVolumeEncryption:
+    enable: false
+    excludeRegions: []
+  s3PublicAccessBlock:
+    enable: false
+    excludeAccounts: []
+  scpRevertChangesConfig:
+    enable: false
+  snsSubscriptions: []
+  macie:
+    enable: false
+    excludeRegions: []
+    policyFindingsPublishingFrequency: FIFTEEN_MINUTES
+    publishSensitiveDataFindings: true
+  guardduty:
+    enable: true
+    excludeRegions: []
+    s3Protection:
+      enable: true
+      excludeRegions: []
+    exportConfiguration:
+      enable: true
+      overrideExisting: false
+      destinationType: S3
+      exportFrequency: FIFTEEN_MINUTES
+  securityHub:
+    enable: true
+    regionAggregation: true
+    excludeRegions: []
+    standards: 
+      - name: AWS Foundational Security Best Practices v1.0.0
+        enable: true
+  ssmAutomation:
+    documentSets:
+      - shareTargets:
+          organizationalUnits:
+            - Root
+        documents:
+          - name: SSMELBEnableLogging
+            template: ssm-documents/ssm-elb-enable-logging.yaml
+          - name: PutS3Encryption
+            template: ssm-documents/s3-encryption.yaml
+          - name: AttachIAMInstanceProfile
+            template: ssm-documents/attach-iam-instance-profile.yaml
+          - name: AttachIAMRolePolicy
+            template: ssm-documents/attach-iam-role-policy.yaml
+accessAnalyzer:
+  enable: false
+iamPasswordPolicy:
+  allowUsersToChangePassword: true
+  hardExpiry: false
+  requireUppercaseCharacters: true
+  requireLowercaseCharacters: true
+  requireSymbols: true
+  requireNumbers: true
+  minimumPasswordLength: 14
+  passwordReusePrevention: 24
+  maxPasswordAge: 90
+awsConfig:
+  enableConfigurationRecorder: true
+  enableDeliveryChannel: true
+  ruleSets:
+    - deploymentTargets:
+        organizationalUnits:
+          - Root
+      rules:
+        - name: accelerator-iam-user-group-membership-check
+          complianceResourceTypes:
+            - AWS::IAM::User
+          identifier: IAM_USER_GROUP_MEMBERSHIP_CHECK
+        - name: accelerator-securityhub-enabled
+          identifier: SECURITYHUB_ENABLED
+        - name: accelerator-cloudtrail-enabled
+          identifier: CLOUD_TRAIL_ENABLED
+        - name: accelerator-cloudwatch-alarm-action-check
+          complianceResourceTypes:
+            - AWS::CloudWatch::Alarm
+          inputParameters:
+            alarmActionRequired: "TRUE"
+            insufficientDataActionRequired: "TRUE"
+            okActionRequired: "FALSE"
+          identifier: CLOUDWATCH_ALARM_ACTION_CHECK
+cloudWatch:
+  metricSets:
+    - regions:
+        - sa-east-1
+      deploymentTargets:
+        accounts:
+          - Management
+      metrics:
+        # CIS 1.7 – Avoid the use of the "root" account
+        - filterName: RootAccountUsage
+          logGroupName: aws-controltower/CloudTrailLogs
+          filterPattern: '{$.userIdentity.type="Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType !="AwsServiceEvent"}'
+          metricNamespace: LogMetrics
+          metricName: RootAccount
+          metricValue: "1"
+        # CIS 4.4 – Ensure a log metric filter and alarm exist for IAM policy changes
+        - filterName: IAMPolicyChangesMetricFilter
+          logGroupName: aws-controltower/CloudTrailLogs
+          filterPattern: "{($.eventName=DeleteGroupPolicy) || ($.eventName=DeleteRolePolicy) || ($.eventName=DeleteUserPolicy) || ($.eventName=PutGroupPolicy) || ($.eventName=PutRolePolicy) || ($.eventName=PutUserPolicy) || ($.eventName=CreatePolicy) || ($.eventName=DeletePolicy) || ($.eventName=CreatePolicyVersion) || ($.eventName=DeletePolicyVersion) || ($.eventName=AttachRolePolicy) || ($.eventName=DetachRolePolicy) || ($.eventName=AttachUserPolicy) || ($.eventName=DetachUserPolicy) || ($.eventName=AttachGroupPolicy) || ($.eventName=DetachGroupPolicy)}"
+          metricNamespace: LogMetrics
+          metricName: IAMPolicyChanges
+          metricValue: "1"
+        # CIS 4.5 – Ensure a log metric filter and alarm exist for CloudTrail configuration changes
+        - filterName: CloudTrailChangesMetricFilter
+          logGroupName: aws-controltower/CloudTrailLogs
+          filterPattern: "{($.eventName=CreateTrail) || ($.eventName=UpdateTrail) || ($.eventName=DeleteTrail) || ($.eventName=StartLogging) || ($.eventName=StopLogging)}"
+          metricNamespace: LogMetrics
+          metricName: CloudTrailChanges
+          metricValue: "1"
+  alarmSets:
+    - regions:
+        - sa-east-1
+      deploymentTargets:
+        accounts:
+          - Management
+      alarms:
+        # CIS 1.7 – Avoid the use of the "root" account
+        - alarmName: CIS-1.7-RootAccountUsage
+          alarmDescription: Alarm for usage of "root" account
+          snsTopicName: Security
+          metricName: RootAccountUsage
+          namespace: LogMetrics
+          comparisonOperator: GreaterThanOrEqualToThreshold
+          evaluationPeriods: 1
+          period: 300
+          statistic: Sum
+          threshold: 1
+          treatMissingData: notBreaching
+        # CIS 4.4 – Ensure a log metric filter and alarm exist for IAM policy changes
+        - alarmName: CIS-4.4-IAMPolicyChanges
+          alarmDescription: Alarm for IAM policy changes
+          snsTopicName: Security
+          metricName: IAMPolicyChanges
+          namespace: LogMetrics
+          comparisonOperator: GreaterThanOrEqualToThreshold
+          evaluationPeriods: 1
+          period: 300
+          statistic: Average
+          threshold: 1
+          treatMissingData: notBreaching
+        # CIS 4.5 – Ensure a log metric filter and alarm exist for CloudTrail configuration changes
+        - alarmName: CIS-4.5-CloudTrailChanges
+          alarmDescription: Alarm for CloudTrail configuration changes
+          snsTopicName: Security
+          metricName: CloudTrailChanges
+          namespace: LogMetrics
+          comparisonOperator: GreaterThanOrEqualToThreshold
+          evaluationPeriods: 1
+          period: 300
+          statistic: Sum
+          threshold: 1
+          treatMissingData: notBreaching
+keyManagementService:
+    keySets:
+      - name: DMS
+        deploymentTargets:
+          accounts:
+            - LakeProd
+        alias: alias/bp/dms/key
+        policy: path/policy.json
+        description: DMS KMS key
+        enabled: true
+        enableKeyRotation: true
+        removalPolicy: retain
+      - name: S3
+        deploymentTargets:
+          accounts:
+            - LakeProd
+        alias: alias/bp/s3/key
+        policy: path/policy.json
+        description: S3 KMS key
+        enabled: true
+        enableKeyRotation: true
+        removalPolicy: retain
+      - name: Logs
+        deploymentTargets:
+          accounts:
+            - LakeProd
+        alias: alias/bp/logs/key
+        policy: path/policy.json
+        description: LOGS KMS key
+        enabled: true
+        enableKeyRotation: true
+        removalPolicy: retain
+      - name: RedShift
+        deploymentTargets:
+          accounts:
+            - LakeProd
+        alias: alias/bp/redshift/key
+        policy: path/policy.json
+        description: Redshift KMS key
+        enabled: true
+        enableKeyRotation: true
+        removalPolicy: retain
+      - name: NonProduction
+        deploymentTargets:
+          accounts:
+            - LakeHmg
+        alias: alias/bp/NonProduction/key
+        policy: path/policy.json
+        description: NonProduction KMS key
+        enabled: true
+        enableKeyRotation: true
+        removalPolicy: retain

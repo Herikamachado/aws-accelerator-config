@@ -2,7 +2,5 @@ defaultVpc:
   delete: false
   excludeAccounts: []
 transitGateways: []
-centralNetworkServices: []
 endpointPolicies: []
 vpcs: []
-vpcFlowLogs: []

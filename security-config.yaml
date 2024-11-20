@@ -32,7 +32,9 @@ centralSecurityServices:
     standards: 
       - name: AWS Foundational Security Best Practices v1.0.0
         enable: true
-  ssmAutomation: []
+  ssmAutomation:
+    excludeRegions: []
+    documentSets: []
 accessAnalyzer:
   enable: false
 iamPasswordPolicy:

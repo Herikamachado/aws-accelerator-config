@@ -15,7 +15,7 @@ mandatoryAccounts:
     email: herikams+prossegur_audit@amazon.com
     organizationalUnit: Security
 workloadAccounts:
-  - name: lza_prossegur
+  - name: prossegur_lza_external
     description: >- 
         Conta que irá realizar os processos de Network da BP e centralizaçã do trafego
     email: herikams+prossegur_lza_external@amazon.com

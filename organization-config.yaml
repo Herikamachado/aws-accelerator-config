@@ -2,9 +2,6 @@ enable: true
 organizationalUnits:
   - name: Security
   - name: Infrastructure
-  - name: NonProduction
-  - name: Production
-  - name: Suspended
 serviceControlPolicies: []
 taggingPolicies: []
 backupPolicies: []

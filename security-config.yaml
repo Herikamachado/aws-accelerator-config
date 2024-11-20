@@ -26,12 +26,13 @@ centralSecurityServices:
       destinationType: S3
       exportFrequency: FIFTEEN_MINUTES
   securityHub:
-    enable: true
+    enable: false
     regionAggregation: true
     excludeRegions: []
     standards: 
       - name: AWS Foundational Security Best Practices v1.0.0
         enable: true
+  ssmAutomation: []
 accessAnalyzer:
   enable: false
 iamPasswordPolicy:

@@ -1,15 +1,12 @@
-homeRegion: us-east-1
+homeRegion: &HOME_REGION us-east-1
 enabledRegions:
-  - us-east-1
+  - *HOME_REGION
 managementAccountAccessRole: AWSControlTowerExecution
-cloudwatchLogRetentionInDays: 7
+cloudwatchLogRetentionInDays: 3653
+terminationProtection: true
 cdkOptions:
   centralizeBuckets: true
   useManagementAccessRole: true
-terminationProtection: true
-controlTower:
-  enable: true
-  controls: []
 snsTopics:
   deploymentTargets:
     organizationalUnits:
@@ -18,6 +15,16 @@ snsTopics:
     - name: Security
       emailAddresses:
         - herikams@amazon.com
+controlTower:
+  enable: true
+  landingZone:
+    version: '3.3'
+    logging:
+      loggingBucketRetentionDays: 365
+      accessLoggingBucketRetentionDays: 3650
+      organizationTrail: true
+    security:
+      enableIdentityCenterAccess: true
 logging:
   account: LogArchive
   cloudtrail:

@@ -14,4 +14,4 @@ mandatoryAccounts:
     description: The security audit account (also referred to as the audit account). Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
     email: herikams+prossegur_audit@amazon.com
     organizationalUnit: Security
-workloadAccounts:[]
+workloadAccounts: []

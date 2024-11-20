@@ -32,20 +32,6 @@ centralSecurityServices:
     standards: 
       - name: AWS Foundational Security Best Practices v1.0.0
         enable: true
-  ssmAutomation:
-    documentSets:
-      - shareTargets:
-          organizationalUnits:
-            - Root
-        documents:
-          - name: SSMELBEnableLogging
-            template: ssm-documents/ssm-elb-enable-logging.yaml
-          - name: PutS3Encryption
-            template: ssm-documents/s3-encryption.yaml
-          - name: AttachIAMInstanceProfile
-            template: ssm-documents/attach-iam-instance-profile.yaml
-          - name: AttachIAMRolePolicy
-            template: ssm-documents/attach-iam-role-policy.yaml
 accessAnalyzer:
   enable: false
 iamPasswordPolicy:
@@ -154,55 +140,3 @@ cloudWatch:
           statistic: Sum
           threshold: 1
           treatMissingData: notBreaching
-keyManagementService:
-    keySets:
-      - name: DMS
-        deploymentTargets:
-          accounts:
-            - LakeProd
-        alias: alias/bp/dms/key
-        policy: path/policy.json
-        description: DMS KMS key
-        enabled: true
-        enableKeyRotation: true
-        removalPolicy: retain
-      - name: S3
-        deploymentTargets:
-          accounts:
-            - LakeProd
-        alias: alias/bp/s3/key
-        policy: path/policy.json
-        description: S3 KMS key
-        enabled: true
-        enableKeyRotation: true
-        removalPolicy: retain
-      - name: Logs
-        deploymentTargets:
-          accounts:
-            - LakeProd
-        alias: alias/bp/logs/key
-        policy: path/policy.json
-        description: LOGS KMS key
-        enabled: true
-        enableKeyRotation: true
-        removalPolicy: retain
-      - name: RedShift
-        deploymentTargets:
-          accounts:
-            - LakeProd
-        alias: alias/bp/redshift/key
-        policy: path/policy.json
-        description: Redshift KMS key
-        enabled: true
-        enableKeyRotation: true
-        removalPolicy: retain
-      - name: NonProduction
-        deploymentTargets:
-          accounts:
-            - LakeHmg
-        alias: alias/bp/NonProduction/key
-        policy: path/policy.json
-        description: NonProduction KMS key
-        enabled: true
-        enableKeyRotation: true
-        removalPolicy: retain

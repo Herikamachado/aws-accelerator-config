@@ -8,16 +8,16 @@ mandatoryAccounts:
     organizationalUnit: Root
   - name: LogArchive
     description: The log archive account. Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
-    email: herikams+lza_prodam_log@amazon.com
+    email: herikams+lza_teste_log@amazon.com
     organizationalUnit: Security
   - name: Audit
     description: The security audit account (also referred to as the audit account). Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
-    email: herikams+lza_prodam_audit@amazon.com
+    email: herikams+lza_teste_audit@amazon.com
     organizationalUnit: Security
 workloadAccounts:
-  - name: lza_prodam_external
+  - name: lza_external_teste
     description: >- 
        Conta que irá realizar os processos de Network da BP e centralizaçã do trafego
-    email: herikams+lza_prodam_external@amazon.com
+    email: herikams+lza_external_teste@amazon.com
     organizationalUnit: Root
     warm: false

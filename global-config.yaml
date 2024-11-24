@@ -1,6 +1,6 @@
-homeRegion: &HOME_REGION us-east-1
+homeRegion: us-east-1
 enabledRegions:
-  - *HOME_REGION
+  - us-east-1
 managementAccountAccessRole: AWSControlTowerExecution
 cloudwatchLogRetentionInDays: 3653
 terminationProtection: true

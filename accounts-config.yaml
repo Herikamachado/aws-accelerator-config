@@ -14,10 +14,10 @@ mandatoryAccounts:
     description: The security audit account (also referred to as the audit account). Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
     email: herika+lza_prodam_audit@amazon.com
     organizationalUnit: Security
-workloadAccounts:
-  - name: prossegur_lza_external
-    description: >- 
-        Conta que irá realizar os processos de Network da BP e centralizaçã do trafego
-    email: herika+lza_prodam_external@amazon.com
-    organizationalUnit: Root
-    warm: false
+workloadAccounts: []
+#  - name: prossegur_lza_external
+#    description: >- 
+#        Conta que irá realizar os processos de Network da BP e centralizaçã do trafego
+#    email: herika+lza_prodam_external@amazon.com
+#    organizationalUnit: Root
+#    warm: false

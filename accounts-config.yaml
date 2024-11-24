@@ -2,7 +2,7 @@ mandatoryAccounts:
   # We recommend you do not change mandatory account names. These are used within Landing Zone Accelerator to reference the accounts from other config files.
   # The "name" value does not currently support spaces
   # The "name" value DOES NOT need to match the account name
-  - name: lza_prodam_management
+  - name: Management
     description: The management (primary) account. Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
     email: herikams+lza_prodam_management@amazon.com
     organizationalUnit: Root

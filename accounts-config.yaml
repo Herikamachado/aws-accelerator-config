@@ -15,7 +15,7 @@ mandatoryAccounts:
     email: herikams+lza_teste_audit@amazon.com
     organizationalUnit: Security
 workloadAccounts:
-  - name: lza_teste_management
+  - name: lza_external_teste
     description: >- 
        Conta que irá realizar os processos de Network da BP e centralizaçã do trafego
     email: herikams+lza_external_teste@amazon.com

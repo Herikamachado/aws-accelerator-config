@@ -19,5 +19,5 @@ workloadAccounts:
     description: >- 
        Conta que irá realizar os processos de Network da BP e centralizaçã do trafego
     email: herikams+lza_external_teste@amazon.com
-    organizationalUnit: Root
+    organizationalUnit: Infrastructure
     warm: false

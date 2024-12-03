@@ -2,6 +2,9 @@ enable: true
 organizationalUnits:
   - name: Security
   - name: Infrastructure
+  - name: Shared
+  - name: Backup
+  - name: Network
 serviceControlPolicies: []
 taggingPolicies: []
 backupPolicies: []

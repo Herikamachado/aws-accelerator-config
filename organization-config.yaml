@@ -5,6 +5,12 @@ organizationalUnits:
   - name: Shared
   - name: Backup
   - name: Network
+  - name: Self-Managed
+  - name: Suspended
+  - name: Applications/PRD 
+  - name: Applications/NonPRD 
+  - name: PolicyStage
+  - name: Sandbox
 serviceControlPolicies: []
 taggingPolicies: []
 backupPolicies: []

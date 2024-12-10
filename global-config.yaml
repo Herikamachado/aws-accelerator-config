@@ -3,29 +3,15 @@ enabledRegions:
   - sa-east-1
   - us-east-1
 managementAccountAccessRole: AWSControlTowerExecution
-cloudwatchLogRetentionInDays: 3653
-terminationProtection: true
+cloudwatchLogRetentionInDays: 365
 cdkOptions:
   centralizeBuckets: true
   useManagementAccessRole: true
-snsTopics:
-  deploymentTargets:
-    organizationalUnits:
-      - Root
-  topics:
-    - name: Security
-      emailAddresses:
-        - herikams@amazon.com
+terminationProtection: true
+enableOptInRegions: false
 controlTower:
   enable: true
-  landingZone:
-    version: '3.3'
-    logging:
-      loggingBucketRetentionDays: 365
-      accessLoggingBucketRetentionDays: 3650
-      organizationTrail: true
-    security:
-      enableIdentityCenterAccess: true
+  controls: []
 logging:
   account: LogArchive
   cloudtrail:
@@ -50,40 +36,4 @@ logging:
     lifecycleRules: []
     attachPolicyToIamRoles: []
 tags: []
-iamRoleSsmParameters: []
-reports:
-  costAndUsageReport:
-    compression: Parquet
-    format: Parquet
-    reportName: accelerator-cur
-    s3Prefix: cur
-    timeUnit: DAILY
-    refreshClosedReports: true
-    reportVersioning: CREATE_NEW_REPORT    
-  budgets:
-    - deploymentTargets:
-        accounts:
-          - Management
-      name: accel-budget
-      timeUnit: MONTHLY
-      type: COST
-      amount: 1000
-      includeUpfront: true
-      includeTax: true
-      includeSupport: true
-      includeSubscription: true
-      includeRecurring: true
-      includeOtherSubscription: true
-      includeDiscount: true
-      includeCredit: false
-      includeRefund: false
-      useBlended: false
-      useAmortized: false
-      unit: USD
-      notifications:
-        - type: ACTUAL
-          thresholdType: PERCENTAGE
-          threshold: 100
-          comparisonOperator: GREATER_THAN
-          subscriptionType: EMAIL
-          address: herikams@amazon.com
+#iamRoleSsmParameters: []

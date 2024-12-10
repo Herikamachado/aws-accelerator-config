@@ -15,23 +15,21 @@ centralSecurityServices:
     policyFindingsPublishingFrequency: FIFTEEN_MINUTES
     publishSensitiveDataFindings: true
   guardduty:
-    enable: true
+    enable: false
     excludeRegions: []
     s3Protection:
-      enable: true
+      enable: false
       excludeRegions: []
     exportConfiguration:
-      enable: true
+      enable: false
       overrideExisting: false
       destinationType: S3
       exportFrequency: FIFTEEN_MINUTES
   securityHub:
     enable: false
-    regionAggregation: true
+    regionAggregation: false
     excludeRegions: []
-    standards: 
-      - name: AWS Foundational Security Best Practices v1.0.0
-        enable: true
+    standards: []
   ssmAutomation:
     excludeRegions: []
     documentSets: []
@@ -48,98 +46,10 @@ iamPasswordPolicy:
   passwordReusePrevention: 24
   maxPasswordAge: 90
 awsConfig:
-  enableConfigurationRecorder: true
-  enableDeliveryChannel: true
-  ruleSets:
-    - deploymentTargets:
-        organizationalUnits:
-          - Root
-      rules:
-        - name: accelerator-iam-user-group-membership-check
-          complianceResourceTypes:
-            - AWS::IAM::User
-          identifier: IAM_USER_GROUP_MEMBERSHIP_CHECK
-        - name: accelerator-securityhub-enabled
-          identifier: SECURITYHUB_ENABLED
-        - name: accelerator-cloudtrail-enabled
-          identifier: CLOUD_TRAIL_ENABLED
-        - name: accelerator-cloudwatch-alarm-action-check
-          complianceResourceTypes:
-            - AWS::CloudWatch::Alarm
-          inputParameters:
-            alarmActionRequired: "TRUE"
-            insufficientDataActionRequired: "TRUE"
-            okActionRequired: "FALSE"
-          identifier: CLOUDWATCH_ALARM_ACTION_CHECK
+  enableConfigurationRecorder: false
+  ruleSets: []
 cloudWatch:
-  metricSets:
-    - regions:
-        - sa-east-1
-      deploymentTargets:
-        accounts:
-          - Management
-      metrics:
-        # CIS 1.7 – Avoid the use of the "root" account
-        - filterName: RootAccountUsage
-          logGroupName: aws-controltower/CloudTrailLogs
-          filterPattern: '{$.userIdentity.type="Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType !="AwsServiceEvent"}'
-          metricNamespace: LogMetrics
-          metricName: RootAccount
-          metricValue: "1"
-        # CIS 4.4 – Ensure a log metric filter and alarm exist for IAM policy changes
-        - filterName: IAMPolicyChangesMetricFilter
-          logGroupName: aws-controltower/CloudTrailLogs
-          filterPattern: "{($.eventName=DeleteGroupPolicy) || ($.eventName=DeleteRolePolicy) || ($.eventName=DeleteUserPolicy) || ($.eventName=PutGroupPolicy) || ($.eventName=PutRolePolicy) || ($.eventName=PutUserPolicy) || ($.eventName=CreatePolicy) || ($.eventName=DeletePolicy) || ($.eventName=CreatePolicyVersion) || ($.eventName=DeletePolicyVersion) || ($.eventName=AttachRolePolicy) || ($.eventName=DetachRolePolicy) || ($.eventName=AttachUserPolicy) || ($.eventName=DetachUserPolicy) || ($.eventName=AttachGroupPolicy) || ($.eventName=DetachGroupPolicy)}"
-          metricNamespace: LogMetrics
-          metricName: IAMPolicyChanges
-          metricValue: "1"
-        # CIS 4.5 – Ensure a log metric filter and alarm exist for CloudTrail configuration changes
-        - filterName: CloudTrailChangesMetricFilter
-          logGroupName: aws-controltower/CloudTrailLogs
-          filterPattern: "{($.eventName=CreateTrail) || ($.eventName=UpdateTrail) || ($.eventName=DeleteTrail) || ($.eventName=StartLogging) || ($.eventName=StopLogging)}"
-          metricNamespace: LogMetrics
-          metricName: CloudTrailChanges
-          metricValue: "1"
-  alarmSets:
-    - regions:
-        - sa-east-1
-      deploymentTargets:
-        accounts:
-          - Management
-      alarms:
-        # CIS 1.7 – Avoid the use of the "root" account
-        - alarmName: CIS-1.7-RootAccountUsage
-          alarmDescription: Alarm for usage of "root" account
-          snsTopicName: Security
-          metricName: RootAccountUsage
-          namespace: LogMetrics
-          comparisonOperator: GreaterThanOrEqualToThreshold
-          evaluationPeriods: 1
-          period: 300
-          statistic: Sum
-          threshold: 1
-          treatMissingData: notBreaching
-        # CIS 4.4 – Ensure a log metric filter and alarm exist for IAM policy changes
-        - alarmName: CIS-4.4-IAMPolicyChanges
-          alarmDescription: Alarm for IAM policy changes
-          snsTopicName: Security
-          metricName: IAMPolicyChanges
-          namespace: LogMetrics
-          comparisonOperator: GreaterThanOrEqualToThreshold
-          evaluationPeriods: 1
-          period: 300
-          statistic: Average
-          threshold: 1
-          treatMissingData: notBreaching
-        # CIS 4.5 – Ensure a log metric filter and alarm exist for CloudTrail configuration changes
-        - alarmName: CIS-4.5-CloudTrailChanges
-          alarmDescription: Alarm for CloudTrail configuration changes
-          snsTopicName: Security
-          metricName: CloudTrailChanges
-          namespace: LogMetrics
-          comparisonOperator: GreaterThanOrEqualToThreshold
-          evaluationPeriods: 1
-          period: 300
-          statistic: Sum
-          threshold: 1
-          treatMissingData: notBreaching
+  metricSets: []
+  alarmSets: []
+keyManagementService:
+  keySets: []

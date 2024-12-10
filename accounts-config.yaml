@@ -4,20 +4,32 @@ mandatoryAccounts:
   # The "name" value DOES NOT need to match the account name
   - name: Management
     description: The management (primary) account. Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
-    email: herikams+prodam_lza_root_ct@amazon.com
+    email: suportebaixaaws@prodam.sp.gov.br
     organizationalUnit: Root
   - name: LogArchive
     description: The log archive account. Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
-    email: herikams+prodam_lza_root_ct_logarquive@amazon.com
+    email: suportebaixaaws+logarchive@prodam.sp.gov.br
     organizationalUnit: Security
   - name: Audit
     description: The security audit account (also referred to as the audit account). Do not change the name field for this mandatory account. Note, the account name key does not need to match the AWS account name.
-    email: herikams+prodam_lza_root_ct_audit@amazon.com
+    email: suportebaixaaws+audit@prodam.sp.gov.br
     organizationalUnit: Security
 workloadAccounts:
-  - name: prodam_lza_root_ct_external
+  - name: LZA-External
     description: >- 
-       Conta que irá realizar os processos de Network da BP e centralizaçã do trafego
-    email: herikams+prodam_lza_root_ct_external@amazon.com
+       This account handles all configurations related to the LZA structure.
+    email: suportebaixaaws+lza@prodam.sp.gov.br
+    organizationalUnit: Infrastructure
+    warm: false
+  - name: Network
+    description: >- 
+       This account handles all configurations related to the Network structure.
+    email: suportebaixaaws+network@prodam.sp.gov.br
+    organizationalUnit: Infrastructure
+    warm: false
+  - name: SharedServices
+    description: >- 
+       This account handles all configurations related to the Network structure.
+    email: suportebaixaaws+sharedservices@prodam.sp.gov.br
     organizationalUnit: Infrastructure
     warm: false

@@ -2,14 +2,11 @@ enable: true
 organizationalUnits:
   - name: Security
   - name: Infrastructure
-  - name: Shared
-  - name: Backup
-  - name: Network
-  - name: Self-Managed
+  - name: SelfManaged
   - name: Suspended
   - name: Applications/PRD 
   - name: Applications/NonPRD 
-  - name: PolicyStage
+  - name: PolicyStaging
   - name: Sandbox
 serviceControlPolicies: []
 taggingPolicies: []
